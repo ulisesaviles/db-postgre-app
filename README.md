@@ -1,5 +1,10 @@
-# db-postgre-app
-Web app del proyecto final de sistemas de bases de datos
+# Proyecto final de Sistemas de Bases de Datos
+El presente repositorio se divide en dos secciones:
+* **Web app**: El reporteador de consultas.
+* **API**: API que conecta la base de datos de PostgreSQL con la web app
+
+## Para iniciar el sistema:
+1. (Aquí van las instrucciones)
 
 ## Miembros del equipo
 * Aviles Ulises **T031438**
