@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/db-postgre-app/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/db-postgre-app/static/js/main.074e8618.chunk.js",
+    "main.js.map": "/db-postgre-app/static/js/main.074e8618.chunk.js.map",
+    "runtime-main.js": "/db-postgre-app/static/js/runtime-main.7be3ec52.js",
+    "runtime-main.js.map": "/db-postgre-app/static/js/runtime-main.7be3ec52.js.map",
+    "static/js/2.7c633c45.chunk.js": "/db-postgre-app/static/js/2.7c633c45.chunk.js",
+    "static/js/2.7c633c45.chunk.js.map": "/db-postgre-app/static/js/2.7c633c45.chunk.js.map",
+    "static/js/3.e311f4d8.chunk.js": "/db-postgre-app/static/js/3.e311f4d8.chunk.js",
+    "static/js/3.e311f4d8.chunk.js.map": "/db-postgre-app/static/js/3.e311f4d8.chunk.js.map",
+    "index.html": "/db-postgre-app/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/db-postgre-app/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.7c633c45.chunk.js.LICENSE.txt": "/db-postgre-app/static/js/2.7c633c45.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/db-postgre-app/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7be3ec52.js",
+    "static/js/2.7c633c45.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.074e8618.chunk.js"
+  ]
+}
