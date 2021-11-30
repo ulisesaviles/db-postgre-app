@@ -15,9 +15,7 @@ import queries from "./config/queries";
 
 const App = () => {
   // Constants
-  const dev = true;
   const [selectedQueryIndex, setSelectedQueryIndex] = useState(0);
-  const [madeQuery, setMadeQuery] = useState(false);
   const [selectedInputIndex, setSelectedInputIndex] = useState(0);
   const [input, setInput] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
@@ -36,7 +34,7 @@ const App = () => {
 
   // Functions
   const changeInput = (value) => {
-    if (value == "") {
+    if (value === "") {
       setInput(0);
       return;
     }
@@ -51,7 +49,6 @@ const App = () => {
   const changeQuery = (newIndex) => {
     setSelectedInputIndex(0);
     setSelectedQueryIndex(newIndex);
-    setMadeQuery(false);
     setLoading(false);
     setErr(false);
     setResData(null);
@@ -65,9 +62,11 @@ const App = () => {
     setErr(false);
 
     let route = "";
-    if (queries[selectedQueryIndex].inputType[selectedInputIndex] == "twoDates")
+    if (
+      queries[selectedQueryIndex].inputType[selectedInputIndex] === "twoDates"
+    )
       route += `/${formatDate(startDate)}/${formatDate(finalDate)}`;
-    else if (queries[selectedQueryIndex].inputType[selectedInputIndex] == "id")
+    else if (queries[selectedQueryIndex].inputType[selectedInputIndex] === "id")
       route += `/${input}`;
 
     setLoading(true);
@@ -150,9 +149,10 @@ const App = () => {
               );
             })}
           </div>
-          {queries[selectedQueryIndex].inputType[selectedInputIndex] == null ? (
+          {queries[selectedQueryIndex].inputType[selectedInputIndex] ===
+          null ? (
             <p className="noInput">(Esta consulta no requiere input)</p>
-          ) : queries[selectedQueryIndex].inputType[selectedInputIndex] ==
+          ) : queries[selectedQueryIndex].inputType[selectedInputIndex] ===
             "twoDates" ? (
             <div className="datesContainer">
               <DatePicker

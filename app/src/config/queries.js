@@ -1,4 +1,4 @@
-export default [
+const queries = [
   // 1
   {
     description: "Factura del servicio de estadía en Hotel.",
@@ -77,3 +77,4 @@ export default [
     inputType: [null],
   },
 ];
+export default queries;
