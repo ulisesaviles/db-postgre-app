@@ -16,39 +16,49 @@ const getMarcoView = async (req, res) => {
 }
 
 const getBonos_log =async (req, res) => {
+    const response = await pool.query('SELECT * FROM bonos_log');
+    console.log(response.rows);
+    res.status(200).json(response.rows)
+}
+
+const getListado_clientes_servicio =async (req, res) => {
+    const { servicioI, fecI, fecS } = req.params;
     const response = await pool.query('CALL listado_clientes_servicio($1, $2, $3, $4)',
-    [6, '2020-01-01','2022-12-01', 1]);
+    [servicioI, fecI,fecS, 1]);
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
 
 const getAplicar_decuentos_tipos =async (req, res) => {
-    const { id_paquete } = req.body;
-    const response = await pool.query('CALL aplicar_descuentos_tipos_hab($1)', [id_paquete]);
+    const { id_paquete } = req.params;
+    let response = await pool.query('CALL aplicar_descuentos_tipos_hab($1)', [id_paquete]);
+    response = await pool.query('SELECT * FROM ver_habitaciones_con_descuento');
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
 
 const getCambiarHabitacion =async (req, res) => {
-    const { habV, habN, reg } = req.body;
+    const { habV, habN, reg } = req.params;
     const response = await pool.query('CALL cambiar_habitacion($1, $2, $3)', [habV, habN, reg]);
-    console.log(response.rows);
     res.status(200).json(response.rows)
 }
 
 const getAvailablePaquete =async (req, res) => {
-    const { nombre, hiesI, fec, email } = req.body;
-    const response = await pool.query('CALL getavailablepaquete($1, $2, $3, $4)', [nombre, hiesI, fec, email]);
+    const { fecI } = req.params;
+    let response = await pool.query('CALL getavailablepaquete($1)', [fecI]);
+    response = await pool.query('SELECT * FROM paqueteDisponible')
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
 
-const GETChecar_Acompanantes =async (req, res) => {
-    const { fecI } = req.body;
-    const response = await pool.query('CALL checar_acompanantes($1)', [fecI]);
+
+const GETChecar_Acompanantes = async (req, res) => {
+    const { nombreAcom, huespedI, fec, email } = req.params;
+    const response = await pool.query('CALL checar_acompanantes($1, $2, $3, $4)', [nombreAcom, huespedI, fec, email]);
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
+
 
 const getHabitaciones = async (req, res) => {
     const response = await pool.query('SELECT * FROM habitacion');
@@ -250,7 +260,7 @@ const posthabitaciones_por_registro =  async (req, res) => {
 }
 
 const getHabitaciones_por_reservacion = async (req, res) => {
-    const response = await pool.query('SELECT * FROM habitaciones_por_reservacio');
+    const response = await pool.query('SELECT * FROM habitaciones_por_reservacion');
     res.status(200).json(response.rows);
 };
 
@@ -466,6 +476,7 @@ module.exports = {
     postFactura,
     getMarcoView,
     getBonos_log,
+    getListado_clientes_servicio,
     getAplicar_decuentos_tipos,
     getAvailablePaquete,
     getCambiarHabitacion,
@@ -484,7 +495,7 @@ module.exports = {
     getServicio,
     getServicios_por_habitacion,
     getServicios_por_paquete,
-    getTipo,
+    getTipo,getHuespedPaga,
     GETChecar_Acompanantes,
     postDepartamento, postEmpleados, postFactura, postHabitacion, postHabitaciones_por_reservacion,
     postHuespedAcompana,  postHuespedPaga, postHuesped_por_habitacion, postQuejas, postQuejas_por_departamento,

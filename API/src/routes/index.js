@@ -8,7 +8,7 @@ const router = Router();
 
 const { 
     getHabitaciones, postHabitacion, query2, query3, query4, query5,query5ById, query6, query7, query8, query9, query10, query12, query13,
-    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion
+    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion, getHuespedPaga, getListado_clientes_servicio
 } = require('../controllers/index.controller')
 
 
@@ -403,31 +403,195 @@ router.get('/query13', query13);
 
 // no requeridas por ahora
 router.get('/habitacion', getHabitaciones );
+// int, date, date
+router.get('/listado_clientes_servicio/:servicioI/:fecI/:fecS', getListado_clientes_servicio);
+/*
+[
+{
+"cant": 2
+}
+] */
+
 // edicicio int, piso int, estado_disponiblidad string, id_tipo string
 router.post('/habitacion/:edificio/:piso/:estado_disponibilidad/:id_tipo', postHabitacion);
 router.get('/marco', getMarcoView);
 router.get('/bonos', getBonos_log);
 router.get('/factura', getFactura );
-router.get('/aplicar_desc', getAplicar_decuentos_tipos);
-router.get('/AvailablePaquete', getAvailablePaquete);
-router.get('/CambiarHab', getCambiarHabitacion);
+router.get('/huesped_paga', getHuespedPaga);
+
+//  int
+router.get('/aplicar_desc/:id_paquete', getAplicar_decuentos_tipos);
+/*[
+{
+"id_tipo": 1,
+"precio_descuentado": 4968,
+"tipo_cama": "Individual",
+"numero_camas": 1,
+"nombre": "individual solo"
+},
+{
+"id_tipo": 2,
+"precio_descuentado": 6075.225,
+"tipo_cama": "Individual",
+"numero_camas": 2,
+"nombre": "indidivual doble"
+}
+] */
+
+// date
+router.get('/AvailablePaquete/:fecI', getAvailablePaquete);
+/*[
+{
+"id_paquete": 1,
+"fecha_inicio": "2021-12-25T08:00:00.000Z",
+"fecha_final": "2022-01-10T08:00:00.000Z",
+"nombre": "anio nuevo",
+"descuento": 0.3
+}
+] */
+
+// int, int, int
+router.get('/CambiarHab/:habV/:habN/:reg', getCambiarHabitacion);
+
+// EN CADA GET DE  TABLA ESTA UN EJEMPLO DE LOS CAMPOS QUE POSEE CADA UNA
 router.get('/departamento', getDepartamento);
+/* 
+[
+    {
+    "id_departamento": 1,
+    "nombre": "Mantenimiento",
+    "id_super": 4
+    }
+] */
 router.get('/empleado', getEmpleados);
+/*
+[
+{
+"id_empleado": 1,
+"nombre_completo": "Favian Espinal Carrión",
+"salario": 40245.52,
+"sexo": "H",
+"id_departamento": 2
+}] */
 router.get('/habitaciones_por_registro', getHabitaciones_por_registro);
+/*
+[
+{
+"numero_habitacion": 1,
+"id_registro": 2
+}] */
 router.get('/habitaciones_por_reservacion', getHabitaciones_por_reservacion);
+/*[
+{
+"numero_habitacion": 81,
+"id_reservacion": 1
+}] */
 router.get('/huesped_acompana', getHuespedAcompana);
+/*[
+{
+"id_huesped": 1,
+"nombre_acopmanante": "Antonio Gonzales Hernandez",
+"fecha_nac": "2000-01-24T08:00:00.000Z",
+"email": "antoniogonher@supermail.com",
+"id_acompanante": 1
+},] */
 router.get('/paquetes', getPaquetes);
+/*
+[{
+"id_paquete": 1,
+"fecha_inicio": "2021-12-25T08:00:00.000Z",
+"fecha_final": "2022-01-10T08:00:00.000Z",
+"nombre": "anio nuevo",
+"descuento": 0.3
+}] */
 router.get('/quejas', getQuejas);
+/*[{
+"id_queja": 1,
+"id_factura": 1,
+"queja": "Me gustaría que el hotel mejorara la higiene del departamento de cocina. Está sucio y desordenado."
+}] */
 router.get('/quejas_por_depto', getQuejas_por_departamento);
+/*
+[{
+"id_departamento": 2,
+"id_queja": 15
+}]
+*/
 router.get('/registro', getRegistro);
+/*
+[{
+"id_registro": 1,
+"fecha_inicio": "2019-11-27T08:00:00.000Z",
+"fecha_salida": "2019-12-02T08:00:00.000Z",
+"id_huesped": 1,
+"id_empleado": 2,
+"id_paquete": 6
+}] */
 router.get('/reservaciones', getReservacion);
+/*[{
+"id_reservacion": 2,
+"num_personas": 2,
+"num_noches": 10,
+"deposito": 5500,
+"medio": "Presencial",
+"email_reservador": "syd.warry@gmail.com",
+"id_huesped": 4,
+"id_paquete": 2,
+"estado": "completada",
+"fecha_inicio": "2021-02-14T08:00:00.000Z"
+}] */
 router.get('/satisfaccion', getSatisfaccion);
+/*[{
+"id_factura": 1,
+"valor": 7,
+"id_depto": 1
+}] */
 router.get('/servicio', getServicio);
+/*[{
+"id_servicio": 1,
+"servicio": "spa",
+"costo_por_persona": 180,
+"tipo": true,
+"descripcion": "Aguas termales de un mundo mágico y relajante",
+"hora_inicio": "08:30:00",
+"hora_fin": "23:30:00",
+"fecha": null
+}] */
 router.get('/servicios_por_habitacion', getServicios_por_habitacion);
+/*
+[{
+"numero_habitacion": 28,
+"id_servicio": 6,
+"importe": 50,
+"fecha": "2021-02-16T08:00:00.000Z"
+}] */
+
 router.get('/servicios_por_paquete', getServicios_por_paquete);
+/*
+[{
+"id_paquete": 1,
+"id_servicio": 1
+}] */
 router.get('/tipo', getTipo);
-router.get('huesped_por_habitacion', getHuesped_por_habitacion)
-router.get('/checar_acompanantes', GETChecar_Acompanantes);
+/*
+[{
+"id_tipo": 1,
+"precio": 5520,
+"tipo_cama": "Individual",
+"numero_camas": 1,
+"nombre": "individual solo"
+}] */
+router.get('/huesped_por_habitacion', getHuesped_por_habitacion)
+/*
+[{
+"numero_habitacion": 10,
+"id_huepsed": 1,
+"id_registro": 1
+}] */
+
+
+// string(50), int, date, string(50)
+router.get('/checar_acompanantes/:nombreAcom/:huespedI/:fec/:email', GETChecar_Acompanantes);
 // fecha date, importe double, id_huesped  int, importe_final double
 router.post('/factura/:fecha/:importe/:id_huesped/:importe_final', postFactura);
 // nombre string(50), fecha_nacimiento date, direccion string(50), email string(50), telefonos int, ciudad string(20), estado string(20), pais string(20), medio string(15)
