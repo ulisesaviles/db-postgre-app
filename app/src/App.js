@@ -377,7 +377,7 @@ const App = () => {
         {/* Description */}
         <div className="description-container">
           <h1 style={{ fontSize: 45 }}>{activeObj.name}</h1>
-          <h3>Descripción</h3>
+          <h3 style={{ left: 0 }}>Descripción</h3>
           {activeObj.description}
         </div>
 
