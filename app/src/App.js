@@ -50,7 +50,9 @@ const App = () => {
       for (let i = 0; i < activeObj.inputs.length; i++) {
         const input = activeObj.inputs[i];
         if (inputs[i] == null) return;
-        route += `/${parseInput(inputs[i], input.type)}`;
+        const subRoute = parseInput(inputs[i], input.type);
+        if (!subRoute) return;
+        route += `/${subRoute}`;
       }
       return route;
     } catch (e) {}
@@ -105,12 +107,12 @@ const App = () => {
   };
 
   const formatHour = (date = new Date()) => {
-    let hours = date.getHours();
-    hours = hours.length === 1 ? "0" + hours : hours;
-    let minutes = date.getMinutes();
-    minutes = minutes.length === 1 ? "0" + minutes : minutes;
-    let seconds = date.getSeconds();
-    seconds = seconds.length === 1 ? "0" + seconds : seconds;
+    let hours = date.getHours().toString();
+    hours = hours.length === 1 ? `0${hours}` : hours;
+    let minutes = date.getMinutes().toString();
+    minutes = minutes.length === 1 ? `0${minutes}` : minutes;
+    let seconds = date.getSeconds().toString();
+    seconds = seconds.length === 1 ? `0${seconds}` : seconds;
     return `${hours}:${minutes}:${seconds}`;
   };
 
@@ -214,8 +216,8 @@ const App = () => {
   const parseInput = (value, type) => {
     if (type === "hour") return formatHour(value);
     if (type === "date") return formatDate(value);
-    if (type === "int") return parseInput(value);
-    if (type === "double") return parseFloat(value);
+    if (type === "int") return value !== "" ? parseInt(value) : null;
+    if (type === "double") return value !== "" ? parseFloat(value) : null;
     return value;
   };
 
@@ -234,7 +236,7 @@ const App = () => {
   const setDoubleInput = (value, index) => {
     let temp = [...inputs];
     if (value === "") {
-      temp[index] = 0;
+      temp[index] = "";
       setInputs(temp);
       return;
     }
@@ -254,7 +256,7 @@ const App = () => {
   const setIntInput = (value, index) => {
     let temp = [...inputs];
     if (value === "") {
-      temp[index] = 1;
+      temp[index] = "";
       setInputs(temp);
       return;
     }
