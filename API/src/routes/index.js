@@ -8,7 +8,7 @@ const router = Router();
 
 const { 
     getHabitaciones, postHabitacion, query2, query3, query4, query5,query5ById, query6, query7, query8, query9, query10, query12, query13,
-    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion, getHuespedPaga
+    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion, getHuespedPaga, getListado_clientes_servicio
 } = require('../controllers/index.controller')
 
 
@@ -403,15 +403,55 @@ router.get('/query13', query13);
 
 // no requeridas por ahora
 router.get('/habitacion', getHabitaciones );
+// int, date, date
+router.get('/listado_clientes_servicio/:servicioI/:fecI/:fecS', getListado_clientes_servicio);
+/*
+[
+{
+"cant": 2
+}
+] */
+
 // edicicio int, piso int, estado_disponiblidad string, id_tipo string
 router.post('/habitacion/:edificio/:piso/:estado_disponibilidad/:id_tipo', postHabitacion);
 router.get('/marco', getMarcoView);
 router.get('/bonos', getBonos_log);
 router.get('/factura', getFactura );
 router.get('/huesped_paga', getHuespedPaga);
-router.get('/aplicar_desc', getAplicar_decuentos_tipos);
-router.get('/AvailablePaquete', getAvailablePaquete);
-router.get('/CambiarHab', getCambiarHabitacion);
+
+//  int
+router.get('/aplicar_desc/:id_paquete', getAplicar_decuentos_tipos);
+/*[
+{
+"id_tipo": 1,
+"precio_descuentado": 4968,
+"tipo_cama": "Individual",
+"numero_camas": 1,
+"nombre": "individual solo"
+},
+{
+"id_tipo": 2,
+"precio_descuentado": 6075.225,
+"tipo_cama": "Individual",
+"numero_camas": 2,
+"nombre": "indidivual doble"
+}
+] */
+
+// date
+router.get('/AvailablePaquete/:fecI', getAvailablePaquete);
+/*[
+{
+"id_paquete": 1,
+"fecha_inicio": "2021-12-25T08:00:00.000Z",
+"fecha_final": "2022-01-10T08:00:00.000Z",
+"nombre": "anio nuevo",
+"descuento": 0.3
+}
+] */
+
+// int, int, int
+router.get('/CambiarHab/:habV/:habN/:reg', getCambiarHabitacion);
 router.get('/departamento', getDepartamento);
 router.get('/empleado', getEmpleados);
 router.get('/habitaciones_por_registro', getHabitaciones_por_registro);
@@ -428,7 +468,9 @@ router.get('/servicios_por_habitacion', getServicios_por_habitacion);
 router.get('/servicios_por_paquete', getServicios_por_paquete);
 router.get('/tipo', getTipo);
 router.get('huesped_por_habitacion', getHuesped_por_habitacion)
-router.get('/checar_acompanantes', GETChecar_Acompanantes);
+
+// string(50), int, date, string(50)
+router.get('/checar_acompanantes/:nombreAcom/:huespedI/:fec/:email', GETChecar_Acompanantes);
 // fecha date, importe double, id_huesped  int, importe_final double
 router.post('/factura/:fecha/:importe/:id_huesped/:importe_final', postFactura);
 // nombre string(50), fecha_nacimiento date, direccion string(50), email string(50), telefonos int, ciudad string(20), estado string(20), pais string(20), medio string(15)
