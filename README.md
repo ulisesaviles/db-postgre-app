@@ -4,7 +4,8 @@ El presente repositorio se divide en dos secciones:
 * **API**: API que conecta la base de datos de PostgreSQL con la web app
 
 ## Para iniciar el sistema:
-1. (Aquí van las instrucciones)
+1. Acceder a  https://ulisesaviles.github.io/db-postgre-app/
+2. Iniciar la api
 
 ## Miembros del equipo
 * Aviles Ulises **T031438**
