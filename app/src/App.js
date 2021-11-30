@@ -216,8 +216,10 @@ const App = () => {
   const parseInput = (value, type) => {
     if (type === "hour") return formatHour(value);
     if (type === "date") return formatDate(value);
-    if (type === "int") return value !== "" ? parseInt(value) : null;
-    if (type === "double") return value !== "" ? parseFloat(value) : null;
+    if (type === "int")
+      return value !== "" && !isNaN(value) ? parseInt(value) : null;
+    if (type === "double")
+      return value !== "" && !isNaN(value) ? parseFloat(value) : null;
     return value;
   };
 
@@ -249,7 +251,6 @@ const App = () => {
       if (value < 0) return;
       temp[index] = value;
       setInputs(temp);
-      console.log(value);
     } catch (e) {}
   };
 
