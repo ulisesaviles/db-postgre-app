@@ -39,7 +39,8 @@ const getAplicar_decuentos_tipos =async (req, res) => {
 
 const getCambiarHabitacion =async (req, res) => {
     const { habV, habN, reg } = req.params;
-    const response = await pool.query('CALL cambiar_habitacion($1, $2, $3)', [habV, habN, reg]);
+    let response = await pool.query('CALL cambiar_habitacion($1, $2, $3)', [habV, habN, reg]);
+    response = await pool.query('SELECT * FROM habitaciones_por_registro WHERE id_registro = $1 AND numero_habitacion = $2', [reg, habN]);
     res.status(200).json(response.rows)
 }
 
@@ -54,7 +55,8 @@ const getAvailablePaquete =async (req, res) => {
 
 const GETChecar_Acompanantes = async (req, res) => {
     const { nombreAcom, huespedI, fec, email } = req.params;
-    const response = await pool.query('CALL checar_acompanantes($1, $2, $3, $4)', [nombreAcom, huespedI, fec, email]);
+    let response = await pool.query('CALL checar_acompanantes($1, $2, $3, $4)', [nombreAcom, huespedI, fec, email]);
+    
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
