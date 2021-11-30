@@ -2,11 +2,13 @@ const { Router } = require('express');
 
 
 const router = Router();
+// todos los get -> tablas, stored procedures, views
+// todos los post
 
 
 const { 
     getHabitaciones, postHabitacion, query2, query3, query4, query5,query5ById, query6, query7, query8, query9, query10, query12, query13,
-    getFactura, postFactura, getMarcoView, getProcedure, query1, query11
+    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion
 } = require('../controllers/index.controller')
 
 
@@ -401,14 +403,65 @@ router.get('/query13', query13);
 
 // no requeridas por ahora
 router.get('/habitacion', getHabitaciones );
-router.post('/habitacion', postHabitacion);
+// edicicio int, piso int, estado_disponiblidad string, id_tipo string
+router.post('/habitacion/:edificio/:piso/:estado_disponibilidad/:id_tipo', postHabitacion);
 router.get('/marco', getMarcoView);
-router.get('/procedure', getProcedure);
+router.get('/bonos', getBonos_log);
 router.get('/factura', getFactura );
-/*router.get('/users/:id', getUserById)
-router.delete('/users/:id', deleteUserById)
-router.put('/users/:id', updateUser)*/
-
+router.get('/aplicar_desc', getAplicar_decuentos_tipos);
+router.get('/AvailablePaquete', getAvailablePaquete);
+router.get('/CambiarHab', getCambiarHabitacion);
+router.get('/departamento', getDepartamento);
+router.get('/empleado', getEmpleados);
+router.get('/habitaciones_por_registro', getHabitaciones_por_registro);
+router.get('/habitaciones_por_reservacion', getHabitaciones_por_reservacion);
+router.get('/huesped_acompana', getHuespedAcompana);
+router.get('/paquetes', getPaquetes);
+router.get('/quejas', getQuejas);
+router.get('/quejas_por_depto', getQuejas_por_departamento);
+router.get('/registro', getRegistro);
+router.get('/reservaciones', getReservacion);
+router.get('/satisfaccion', getSatisfaccion);
+router.get('/servicio', getServicio);
+router.get('/servicios_por_habitacion', getServicios_por_habitacion);
+router.get('/servicios_por_paquete', getServicios_por_paquete);
+router.get('/tipo', getTipo);
+router.get('huesped_por_habitacion', getHuesped_por_habitacion)
+router.get('/checar_acompanantes', GETChecar_Acompanantes);
+// fecha date, importe double, id_huesped  int, importe_final double
+router.post('/factura/:fecha/:importe/:id_huesped/:importe_final', postFactura);
+// nombre string(50), fecha_nacimiento date, direccion string(50), email string(50), telefonos int, ciudad string(20), estado string(20), pais string(20), medio string(15)
+router.post('/huesped_paga/:nombre/:fecha_nacimiento/:direccion/:email/:rfc/:tel_casa/:tel_celular/:ciudad/:estado/:pais/:medio', postHuespedPaga)
+// nombre string(50), fecha date, email string(50), id int
+router.post('/huesped_acompana/:nombre_acompanante/:fecha_nac/:email/:id_huesped', postHuespedAcompana);
+// quejaI int, facturaI int, queja string
+router.post('/quejas/:quejaI/:facturaI/:queja', postQuejas)
+// fecha date, id's int
+router.post('/registro/:fechaI/:fechaS/:id_huesped/:id_empleado/:id_paquete', postRegistro)
+// num_personas int, num_noches int, deposito double, medio string(15), email string(50), id's int, estado string(20), fecha date
+router.post('/reservacion/:num_personas/:num_noches/:deposito/:medio/:email_reservador/:id_huesped/:id_paquete/:estado/:fecha_inicio',postReservacion)
+// servicio string(50), costo double, tipo bool, descripcion string, hora time_without_time_zone, fecha date
+router.post('/servicio/:servicio/:costo_por_persona/:tipo/:descripcion/:hora_inicio/:hora_fin/:fecha', postServicio)
+// precio double, tipo_cama string(20), numero int, nombre string(20) 
+router.post('/tipo/:precio/:tipo_cama/:numero_camas/:nombre', postTipo);
+// nombre string(25), id int
+router.post('/departamento/:nombre/:id_super', postDepartamento)
+// nombre string(50), double, string(1), int
+router.post('/empleados/:nombre_completo/:salario/:sexo/:id_departamento', postEmpleados)
+// int, int
+router.post('/habitaciones_por_registro/:numero_habitacion/:id_registro', posthabitaciones_por_registro)
+// int, int
+router.post('/habitaciones_por_reservacion/:numero_habitacion/:id_reservacion', postHabitaciones_por_reservacion);
+// int, int
+router.post('/huesped_por_habitacion/:numero_habitacion:/id_huesped', postHuesped_por_habitacion)
+// int, int
+router.post('/quejas_por_departamento/:id_departamento/:id_queja', postQuejas_por_departamento)
+// int, int , int 
+router.post('/satisfaccion/:id_factura/:valor/:id_depto', postSatisfaccion)
+// int, int, double, date
+router.post('/servicios_por_habitacion/:numero_habitacion/:id_servicio/:importe/:fecha', postServicios_por_habitacion);
+// int, int
+router.post('/servicios_por_paquete/:id_paquete/:id_servicio', postServicios_por_paquete)
 
 module.exports = router;
 

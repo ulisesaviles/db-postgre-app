@@ -8,5 +8,5 @@ app.use(express.urlencoded({extended:false}));
 
 app.use(require('./routes/index'))
 
-app.listen(4000);
+app.listen(3000);
 console.log('Port running')
