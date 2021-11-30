@@ -439,89 +439,93 @@ const App = () => {
           ) : (
             // New input format
             <>
-              {activeObj.inputs.map((input) => {
-                const inputIndex = activeObj.inputs.indexOf(input);
-                return (
-                  <div className="inputContainer">
-                    <p className="inputName_">{input.name}</p>
-                    {input.type === "int" ? (
-                      <>
-                        <input
-                          onChange={(e) =>
-                            changeInputs(e.target.value, inputIndex)
-                          }
-                          value={inputs[inputIndex]}
-                        />
-                        <p className="noInput" style={{ fontSize: 14 }}>
-                          (Recuerda ingresar enteros positivos)
-                        </p>
-                      </>
-                    ) : input.type === "double" ? (
-                      <>
-                        <input
-                          onChange={(e) =>
-                            changeInputs(e.target.value, inputIndex)
-                          }
-                          value={inputs[inputIndex]}
-                        />
-                        <p className="noInput" style={{ fontSize: 14 }}>
-                          (Recuerda ingresar números positivos)
-                        </p>
-                      </>
-                    ) : input.type === "boolean" ? (
-                      <>
-                        <div className="ipnutsContainer">
-                          {[false, true].map((bool) => {
-                            return (
-                              <div
-                                className={
-                                  inputs[inputIndex] === bool
-                                    ? "inputName"
-                                    : "margin"
-                                }
-                                onClick={() => changeInputs(bool, inputIndex)}
-                              >
-                                {strings.booleans[JSON.stringify(bool)]}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </>
-                    ) : input.type === "date" ? (
-                      <>
-                        <DatePicker
-                          selected={inputs[inputIndex]}
-                          onChange={(date) => changeInputs(date, inputIndex)}
-                        />
-                      </>
-                    ) : input.type === "hour" ? (
-                      <>
-                        <DatePicker
-                          selected={inputs[inputIndex]}
-                          onChange={(date) => changeInputs(date, inputIndex)}
-                          showTimeSelect
-                          showTimeSelectOnly
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <input
-                          onChange={(e) =>
-                            changeInputs(e.target.value, inputIndex)
-                          }
-                          value={inputs[inputIndex]}
-                          style={{ width: "200%" }}
-                        />
-                        <p className="noInput" style={{ fontSize: 14 }}>
-                          (Recuerda ingresar hasta{" "}
-                          {activeObj.inputs[inputIndex].type.split("_")[1]}{" "}
-                          caracteres)
-                        </p>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
+              {activeObj.inputs.length === 0 ? (
+                <p className="noInput">(Esta consulta no requiere input)</p>
+              ) : (
+                activeObj.inputs.map((input) => {
+                  const inputIndex = activeObj.inputs.indexOf(input);
+                  return (
+                    <div className="inputContainer">
+                      <p className="inputName_">{input.name}</p>
+                      {input.type === "int" ? (
+                        <>
+                          <input
+                            onChange={(e) =>
+                              changeInputs(e.target.value, inputIndex)
+                            }
+                            value={inputs[inputIndex]}
+                          />
+                          <p className="noInput" style={{ fontSize: 14 }}>
+                            (Recuerda ingresar enteros positivos)
+                          </p>
+                        </>
+                      ) : input.type === "double" ? (
+                        <>
+                          <input
+                            onChange={(e) =>
+                              changeInputs(e.target.value, inputIndex)
+                            }
+                            value={inputs[inputIndex]}
+                          />
+                          <p className="noInput" style={{ fontSize: 14 }}>
+                            (Recuerda ingresar números positivos)
+                          </p>
+                        </>
+                      ) : input.type === "boolean" ? (
+                        <>
+                          <div className="ipnutsContainer">
+                            {[false, true].map((bool) => {
+                              return (
+                                <div
+                                  className={
+                                    inputs[inputIndex] === bool
+                                      ? "inputName"
+                                      : "margin"
+                                  }
+                                  onClick={() => changeInputs(bool, inputIndex)}
+                                >
+                                  {strings.booleans[JSON.stringify(bool)]}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      ) : input.type === "date" ? (
+                        <>
+                          <DatePicker
+                            selected={inputs[inputIndex]}
+                            onChange={(date) => changeInputs(date, inputIndex)}
+                          />
+                        </>
+                      ) : input.type === "hour" ? (
+                        <>
+                          <DatePicker
+                            selected={inputs[inputIndex]}
+                            onChange={(date) => changeInputs(date, inputIndex)}
+                            showTimeSelect
+                            showTimeSelectOnly
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <input
+                            onChange={(e) =>
+                              changeInputs(e.target.value, inputIndex)
+                            }
+                            value={inputs[inputIndex]}
+                            style={{ width: "200%" }}
+                          />
+                          <p className="noInput" style={{ fontSize: 14 }}>
+                            (Recuerda ingresar hasta{" "}
+                            {activeObj.inputs[inputIndex].type.split("_")[1]}{" "}
+                            caracteres)
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </>
           )}
           <div className="nav-query-Container-selected btn" onClick={handleBtn}>
