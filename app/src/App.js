@@ -1,94 +1,203 @@
+// React imports
 import React, { useState } from "react";
 import "./App.css";
+import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+
+// HTTP
+import axios from "axios";
+
+// Components
+import { Table } from "./components/Table";
+
+// Config
+import queries from "./config/queries";
 
 const App = () => {
+  // Constants
+  const dev = true;
   const [selectedQueryIndex, setSelectedQueryIndex] = useState(0);
+  const [madeQuery, setMadeQuery] = useState(false);
+  const [selectedInputIndex, setSelectedInputIndex] = useState(0);
+  const [input, setInput] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const [finalDate, setFinalDate] = useState(new Date());
+  const [resData, setResData] = useState(null);
+  const [err, setErr] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const queries = [
-    // 1
-    {
-      description: "Factura del servicio de estadía en Hotel.",
-      inputType: ["id"],
+  const strings = {
+    inputNames: {
+      twoDates: "Fechas",
+      null: "Sin entrada",
+      id: "ID",
     },
-    // 2
-    {
-      description:
-        "Reporte de habitaciones disponibles clasificado por tipo de habitación.",
-      inputType: [null],
-    },
-    // 3
-    {
-      description:
-        "Reporte de habitaciones ocupadas y número de huéspedes por fecha determinada.",
-      inputType: ["twoDates"],
-    },
-    // 4
-    {
-      description:
-        "Reporte de ocupación del hotel clasificado por temporada en un rango de fechas dado.",
-      inputType: ["twoDates"],
-    },
-    // 5
-    {
-      description:
-        "Reporte del tipo de habitación con su descripción y números de habitaciones disponible del  hotel.",
-      inputType: [null, "id"],
-    },
-    // 6
-    {
-      description:
-        "Reporte de los registros con mayor tiempo de ocupación por un rango de fechas determinado.",
-      inputType: ["twoDates"],
-    },
-    // 7
-    {
-      description:
-        "Reporte de los empleados totales que laboran en el hotel, clasificado por departamentos.",
-      inputType: [null],
-    },
-    // 8
-    {
-      description:
-        "Reporte de los empleados de mostrador con mayor bono obtenido por el registro de los  huéspedes en base a una fecha determinada.",
-      inputType: [null],
-    },
-    // 9
-    {
-      description:
-        "Reporte de las ventas realizadas (Registro de habitación, servicios adquiridos) en un  determinado rango de fechas.",
-      inputType: ["twoDates"],
-    },
-    // 10
-    {
-      description:
-        "Reporte de ganancias obtenidas por servicios adquiridos clasificados por tipo de servicio y en  base a un rango de fechas dado.",
-      inputType: ["twoDates"],
-    },
-    // 11
-    {
-      description:
-        "Reporte de quejas registradas en base a un rango de fechas dado y clasificado por el  departamento al que fue aplicada la queja.",
-      inputType: [null],
-    },
-    // 12
-    {
-      description:
-        "Reporte de número de huéspedes registrados y clasificados por el medio de registro (Internet,  Teléfono, Presencial) y muestre las ganancias obtenidas en base a rango de fechas dado.",
-      inputType: ["twoDates"],
-    },
-    // 13
-    {
-      description:
-        "Reporte del departamento con mejor rating de satisfacción, en base a un rango de fechas dado.",
-      inputType: [null],
-    },
-  ];
+  };
+
+  // Functions
+  const changeInput = (value) => {
+    if (value == "") {
+      setInput(0);
+      return;
+    }
+    try {
+      if (isNaN(value)) return;
+      value = parseInt(value);
+      if (value < 0) return;
+      setInput(value);
+    } catch (e) {}
+  };
+
+  const changeQuery = (newIndex) => {
+    setSelectedInputIndex(0);
+    setSelectedQueryIndex(newIndex);
+    setMadeQuery(false);
+    setLoading(false);
+    setErr(false);
+    setResData(null);
+  };
+
+  const formatDate = (date = new Date()) => {
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  };
+
+  const makeQuery = async () => {
+    setErr(false);
+
+    let route = "";
+    if (queries[selectedQueryIndex].inputType[selectedInputIndex] == "twoDates")
+      route += `/${formatDate(startDate)}/${formatDate(finalDate)}`;
+    else if (queries[selectedQueryIndex].inputType[selectedInputIndex] == "id")
+      route += `/${input}`;
+
+    setLoading(true);
+    console.log(`http://localhost:3000/query${selectedQueryIndex + 1}${route}`);
+    let response;
+    try {
+      response = await axios.get(
+        `http://localhost:3000/query${selectedQueryIndex + 1}${route}`
+      );
+    } catch (e) {
+      setLoading(false);
+      setErr(true);
+      return;
+    }
+    setLoading(false);
+
+    if (response.status !== 200) {
+      setErr(true);
+      return;
+    }
+
+    setResData(response.data);
+  };
 
   return (
-    <div className="App">
-      <nav className="nav">
-        <img src={}/>
+    <div className="app">
+      <nav>
+        <img
+          src="https://raw.githubusercontent.com/ulisesaviles/db-postgre-app/main/app/public/logo1000.png"
+          className="logo"
+          alt="logo"
+        />
+        <h3>Consultas</h3>
+        <div className="nav-queries-container">
+          {queries.map((query) => {
+            const index = queries.indexOf(query);
+            return (
+              <div
+                className={`nav-query-Container ${
+                  selectedQueryIndex === index
+                    ? "nav-query-Container-selected"
+                    : ""
+                }`}
+                onClick={() => changeQuery(index)}
+              >
+                Consulta {index + 1}
+              </div>
+            );
+          })}
+        </div>
       </nav>
+      <div className="content-container">
+        <div className="description-container">
+          <h1 style={{ fontSize: 45 }}>Consulta {selectedQueryIndex + 1}</h1>
+          <h3>Descripción</h3>
+          {queries[selectedQueryIndex].description}
+        </div>
+        <div className="content-subContainer border-bottom">
+          <h1>Input</h1>
+          <div className="ipnutsContainer">
+            {queries[selectedQueryIndex].inputType.map((type) => {
+              const inputIndex =
+                queries[selectedQueryIndex].inputType.indexOf(type);
+              return (
+                <div
+                  className={
+                    selectedInputIndex === inputIndex ? "inputName" : "margin"
+                  }
+                  onClick={() => setSelectedInputIndex(inputIndex)}
+                >
+                  {strings.inputNames[type]}
+                </div>
+              );
+            })}
+          </div>
+          {queries[selectedQueryIndex].inputType[selectedInputIndex] == null ? (
+            <p className="noInput">(Esta consulta no requiere input)</p>
+          ) : queries[selectedQueryIndex].inputType[selectedInputIndex] ==
+            "twoDates" ? (
+            <div className="datesContainer">
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+              a
+              <DatePicker
+                selected={finalDate}
+                onChange={(date) => setFinalDate(date)}
+              />
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <input
+                onChange={(e) => changeInput(e.target.value)}
+                value={input}
+              />
+              <p className="noInput" style={{ fontSize: 14 }}>
+                (Recuerda ingresar enteros positivos)
+              </p>
+            </div>
+          )}
+          <div className="nav-query-Container-selected btn" onClick={makeQuery}>
+            Hacer consulta
+          </div>
+        </div>
+        <div className="content-subContainer">
+          <h1>Output</h1>
+          {loading ? (
+            <p className="noInput" style={{ margin: 20 }}>
+              Cargando...
+            </p>
+          ) : err ? (
+            <p className="noInput" style={{ margin: 20 }}>
+              Error. Revisa tu conexión.
+            </p>
+          ) : resData != null ? (
+            <Table data={resData} />
+          ) : (
+            <p className="noInput" style={{ margin: 20 }}>
+              (Ingresa la información solicitada y preciona "Hacer consulta")
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
