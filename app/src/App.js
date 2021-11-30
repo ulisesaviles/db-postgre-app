@@ -46,7 +46,7 @@ const App = () => {
   // Functions
   const buildRoute = () => {
     try {
-      let route = activeObj.route;
+      let route = `http://localhost:3000${activeObj.route}`;
       for (let i = 0; i < activeObj.inputs.length; i++) {
         const input = activeObj.inputs[i];
         if (inputs[i] == null) return;
