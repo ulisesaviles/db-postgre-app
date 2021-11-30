@@ -484,7 +484,7 @@ module.exports = {
     getServicio,
     getServicios_por_habitacion,
     getServicios_por_paquete,
-    getTipo,
+    getTipo,getHuespedPaga,
     GETChecar_Acompanantes,
     postDepartamento, postEmpleados, postFactura, postHabitacion, postHabitaciones_por_reservacion,
     postHuespedAcompana,  postHuespedPaga, postHuesped_por_habitacion, postQuejas, postQuejas_por_departamento,

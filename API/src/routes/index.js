@@ -8,7 +8,7 @@ const router = Router();
 
 const { 
     getHabitaciones, postHabitacion, query2, query3, query4, query5,query5ById, query6, query7, query8, query9, query10, query12, query13,
-    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion
+    getFactura, postFactura, getMarcoView, getBonos_log, query1, query11, getAplicar_decuentos_tipos, getAvailablePaquete, getCambiarHabitacion, getDepartamento, getEmpleados, getHabitaciones_por_registro, getHabitaciones_por_reservacion, getHuespedAcompana, getPaquetes, getQuejas, getQuejas_por_departamento, getRegistro, getReservacion, getServicio, getServicios_por_habitacion, getSatisfaccion, getServicios_por_paquete, getTipo, GETChecar_Acompanantes, postHuespedPaga, postHuespedAcompana, postQuejas, postRegistro, postReservacion, postServicio, postTipo, postDepartamento, postEmpleados, posthabitaciones_por_registro, postHabitaciones_por_reservacion, postHuesped_por_habitacion, postQuejas_por_departamento, postSatisfaccion, postServicios_por_habitacion, postServicios_por_paquete, getHuesped_por_habitacion, getHuespedPaga
 } = require('../controllers/index.controller')
 
 
@@ -408,6 +408,7 @@ router.post('/habitacion/:edificio/:piso/:estado_disponibilidad/:id_tipo', postH
 router.get('/marco', getMarcoView);
 router.get('/bonos', getBonos_log);
 router.get('/factura', getFactura );
+router.get('/huesped_paga', getHuespedPaga);
 router.get('/aplicar_desc', getAplicar_decuentos_tipos);
 router.get('/AvailablePaquete', getAvailablePaquete);
 router.get('/CambiarHab', getCambiarHabitacion);
