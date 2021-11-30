@@ -128,7 +128,7 @@ const getPaquetes = async (req, res) => {
 };
 
 const postQuejas = async (req, res) => {
-    const { facturaI,  queja } = req.params;
+    const { quejaI, facturaI,  queja } = req.params;
     const response = await pool.query(
         'INSERT INTO quejas(id_factura, queja) VALUES ($1, $2)',
          [facturaI,  queja])
@@ -170,6 +170,7 @@ const postReservacion = async (req, res) => {
          [ num_personas,num_noches, deposito, medio, email_reservador, id_huesped, id_paquete, estado, fecha_inicio ])
     res.json({
         message: 'done',
+
     })
 }
 
@@ -182,7 +183,7 @@ const getServicio = async (req, res) => {
 const postServicio= async (req, res) => {
     const { servicio, costo_por_persona, tipo, descripcion, hora_inicio, hora_fin, fecha } = req.params;
     const response = await pool.query(
-        'INSERT INTO servicios(servicio, costo_por_persona, tipo, descripcion, hora_inicio, hora_fin, fecha ) VALUES ($1, $2, $3, $, $5, $6, $7)',
+        'INSERT INTO servicios(servicio, costo_por_persona, tipo, descripcion, hora_inicio, hora_fin, fecha ) VALUES ($1, $2, $3, $4, $5, $6, $7)',
          [ servicio, costo_por_persona, tipo, descripcion, hora_inicio, hora_fin, fecha ])
     res.json({
         message: 'done',
@@ -197,7 +198,7 @@ const getTipo = async (req, res) => {
 const postTipo = async (req, res) => {
     const {precio, tipo_cama, numero_camas, nombre} = req.params;
     const response = await pool.query(
-        'INSERT INTO tipos_habitacion(precio, tipo_cama, numero_camas, nombre ) VALUES ($1, $2, $3, $, $5, $6, $7)',
+        'INSERT INTO tipos_habitacion(precio, tipo_cama, numero_camas, nombre ) VALUES ($1, $2, $3, $4)',
          [ precio, tipo_cama, numero_camas, nombre ])
     res.json({
         message: 'done',
@@ -213,7 +214,7 @@ const postDepartamento = async (req, res) => {
     const {nombre, id_super} = req.params;
     const response = await pool.query(
         'INSERT INTO departamento(nombre, id_super) VALUES ($1, $2)',
-         [ precio, tipo_cama, numero_camas, nombre ])
+         [ nombre, id_super ])
     res.json({
         message: 'done',
     })
@@ -241,7 +242,7 @@ const getHabitaciones_por_registro = async (req, res) => {
 const posthabitaciones_por_registro =  async (req, res) => {
     const {numero_habitacion,id_registro} = req.params;
     const response = await pool.query(
-        'INSERT INTO habitaciones_por_registro(numero_habitacion,id_registro) VALUES ($1, $2,\)',
+        'INSERT INTO habitaciones_por_registro(numero_habitacion,id_registro) VALUES ($1, $2)',
          [numero_habitacion,id_registro])
     res.json({
         message: 'done',
@@ -270,10 +271,9 @@ const getHuesped_por_habitacion = async (req, res) => {
 };
 
 const postHuesped_por_habitacion = async (req, res) => {
-    const {numero_habitacion, id_huesped} = req.params;
-    const response = await pool.query(
-        'INSERT INTO huesped_por_habitacion(numero_habitacion, id_huesped) VALUES ($1, $2)',
-         [ numero_habitacion, id_huesped ])
+    const {numero_habitacion, id_huesped, id_registro} = req.params;
+    const response = await pool.query('INSERT INTO huepsed_por_habitacion(numero_habitacion, id_huepsed, id_registro) VALUES ($1, $2, $3)',
+         [ numero_habitacion, id_huesped, 1 ])
     res.json({
         message: 'done',
     })
@@ -286,6 +286,7 @@ const getQuejas_por_departamento = async (req, res) => {
 
 const postQuejas_por_departamento = async (req, res) => {
     const {id_departamento, id_queja} = req.params;
+    console.log(req.params)
     const response = await pool.query(
         'INSERT INTO quejas_por_departamento(id_departamento, id_queja) VALUES ($1, $2)',
          [ id_departamento, id_queja ])
