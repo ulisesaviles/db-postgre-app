@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 // HTTP
 import axios from "axios";
@@ -92,8 +92,10 @@ const App = () => {
     setResData(response.data);
   };
 
+  // Render
   return (
     <div className="app">
+      {/* Nav bar */}
       <nav>
         <img
           src="https://raw.githubusercontent.com/ulisesaviles/db-postgre-app/main/app/public/logo1000.png"
@@ -119,12 +121,17 @@ const App = () => {
           })}
         </div>
       </nav>
+
+      {/* Content */}
       <div className="content-container">
+        {/* Description */}
         <div className="description-container">
           <h1 style={{ fontSize: 45 }}>Consulta {selectedQueryIndex + 1}</h1>
           <h3>Descripción</h3>
           {queries[selectedQueryIndex].description}
         </div>
+
+        {/* Input section */}
         <div className="content-subContainer border-bottom">
           <h1>Input</h1>
           <div className="ipnutsContainer">
@@ -152,7 +159,7 @@ const App = () => {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
               />
-              a
+
               <DatePicker
                 selected={finalDate}
                 onChange={(date) => setFinalDate(date)}
@@ -179,6 +186,8 @@ const App = () => {
             Hacer consulta
           </div>
         </div>
+
+        {/* Response section */}
         <div className="content-subContainer">
           <h1>Output</h1>
           {loading ? (
