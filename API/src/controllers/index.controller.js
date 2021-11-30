@@ -260,7 +260,7 @@ const posthabitaciones_por_registro =  async (req, res) => {
 }
 
 const getHabitaciones_por_reservacion = async (req, res) => {
-    const response = await pool.query('SELECT * FROM habitaciones_por_reservacio');
+    const response = await pool.query('SELECT * FROM habitaciones_por_reservacion');
     res.status(200).json(response.rows);
 };
 
