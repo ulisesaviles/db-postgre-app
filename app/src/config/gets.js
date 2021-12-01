@@ -120,7 +120,7 @@ const gets = [
     description: "Obtiene los registros de la tabla Tipo",
   },
   {
-    route: "huesped_por_habitacion",
+    route: "/huesped_por_habitacion",
     inputs: [],
     name: "Obtener: Huesped por habitación",
     description: "Obtiene los registros de la tabla Huesped por habitación",
