@@ -530,7 +530,7 @@ const App = () => {
             </>
           )}
           <div className="nav-query-Container-selected btn" onClick={handleBtn}>
-            Hacer consulta
+            Go
           </div>
           {inputErr ? <p className="err">Ingresa información válida</p> : null}
         </div>

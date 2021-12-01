@@ -128,8 +128,7 @@ const posts = [
   {
     route: "/quejas",
     inputs: [
-      { type: "int", name: "QuejaI" },
-      { type: "int", name: "FacturaI" },
+      { type: "int", name: "ID de la factura" },
       { type: "string_50", name: "Queja" },
     ],
     name: "Inserción en Quejas",
@@ -138,8 +137,8 @@ const posts = [
   {
     route: "/registro",
     inputs: [
-      { type: "date", name: "FechaI" },
-      { type: "date", name: "FechaS" },
+      { type: "date", name: "Fecha de inicio" },
+      { type: "date", name: "Fecha de salida" },
       { type: "int", name: "ID del huesped" },
       { type: "int", name: "ID del empleado" },
       { type: "int", name: "ID del paquete" },
