@@ -230,6 +230,7 @@ const posts = [
     inputs: [
       { type: "int", name: "Número de habitación" },
       { type: "int", name: "ID del huesped" },
+      { type: "int", name: "ID del registro" },
     ],
     name: "Inserción en Huesped por habitación",
     description: "Inserta en la tabla Huesped por habitación",
