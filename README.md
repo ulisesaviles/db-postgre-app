@@ -8,7 +8,7 @@ El presente repositorio se divide en dos secciones:
 2. Iniciar la api
 
 ## Miembros del equipo
-* Almaraz García Angel **T031438**
+* Almaraz García Angel **T031753**
 * Aviles Ibarra Ulises Eduardo **T031438**
 * Cruz Esquivel Elian **T032218**
 * De La Cruz Escalante Nestor **T031116**
