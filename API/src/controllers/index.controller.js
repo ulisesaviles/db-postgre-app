@@ -56,7 +56,8 @@ const getAvailablePaquete =async (req, res) => {
 const GETChecar_Acompanantes = async (req, res) => {
     const { nombreAcom, huespedI, fec, email } = req.params;
     let response = await pool.query('CALL checar_acompanantes($1, $2, $3, $4)', [nombreAcom, huespedI, fec, email]);
-    
+    console.log(response)
+    response = await pool.query('SELECT * FROM huesped_acompana WHERE id_huesped = $2 AND nombre_acopmanante = $1 AND fecha_nac= $3 AND email=$4', [nombreAcom, huespedI, fec, email]);
     console.log(response.rows);
     res.status(200).json(response.rows)
 }
@@ -117,7 +118,7 @@ const getHuespedAcompana = async (req, res) => {
 const postHuespedAcompana = async (req, res)=> {
     const { nombre_acompanante, fecha_nac, email, id_huesped } = req.params;
     const response = await pool.query(
-        'INSERT INTO huesped_acompana(nombre_acopmanante, fecha_nac, email, id_huesped) VALUES ($1, $2, $3, $4)',
+        'CALL checar_acompanantes($1, $2, $3, $4)',
          [nombre_acompanante, fecha_nac, email, id_huesped])
     res.json({
         message: 'done',
@@ -275,7 +276,7 @@ const getHuesped_por_habitacion = async (req, res) => {
 const postHuesped_por_habitacion = async (req, res) => {
     const {numero_habitacion, id_huesped, id_registro} = req.params;
     const response = await pool.query('INSERT INTO huepsed_por_habitacion(numero_habitacion, id_huepsed, id_registro) VALUES ($1, $2, $3)',
-         [ numero_habitacion, id_huesped, 1 ])
+         [ numero_habitacion, id_huesped, id_registro ])
     res.json({
         message: 'done',
     })
@@ -365,9 +366,10 @@ const query3 = async (req, res) => {
     res.status(200).json(response.rows)
 };
 
+// este
 const query4 = async (req, res) => {
     const response = await pool.query(
-        'SELECT COUNT(*) FROM habitacion INNER JOIN (SELECT * FROM registro INNER JOIN habitaciones_por_registro ON registro.id_registro=habitaciones_por_registro.id_registro ) AS temp ON habitacion.numero_habitacion = temp.numero_habitacion WHERE fecha_inicio BETWEEN $1 AND $2 AND fecha_salida BETWEEN $1 AND $2', 
+        'SELECT COUNT(*), temp.nombre  FROM habitacion INNER JOIN ( SELECT * FROM (SELECT *, registro.fecha_inicio as fi, registro.fecha_salida as fs FROM registro INNER JOIN paquetes ON registro.id_paquete = paquetes.id_paquete) AS uno INNER JOIN habitaciones_por_registro ON uno.id_registro=habitaciones_por_registro.id_registro ) AS temp ON habitacion.numero_habitacion = temp.numero_habitacion WHERE fi BETWEEN $1 AND $2 AND fs BETWEEN $1 AND $2 GROUP BY temp.nombre', 
         [req.params.inicio, req.params.salida ]
     );
     res.status(200).json(response.rows)
@@ -390,7 +392,7 @@ const query5ById = async (req, res) => {
 
 const query6 = async (req, res) => {
     const response = await pool.query(
-        'SELECT MAX(fecha_salida-fecha_inicio), id_registro FROM registro WHERE fecha_inicio BETWEEN $1 AND $2 GROUP BY id_registro ORDER BY max DESC',
+        'SELECT MAX(fecha_salida-fecha_inicio) , id_registro FROM registro WHERE fecha_inicio BETWEEN $1 AND $2 GROUP BY id_registro ORDER BY max DESC',
         [req.params.inicio, req.params.salida ]
     );
     res.status(200).json(response.rows)
@@ -412,7 +414,7 @@ const query8 = async (req, res) => {
 
 const query9 = async (req, res) => {
     const response = await pool.query(
-        'SELECT SUM(suma) FROM (SELECT SUM((fecha_salida-fecha_inicio)*precio) as suma FROM registro INNER JOIN (SELECT * FROM habitaciones_por_registro INNER JOIN (SELECT * FROM habitacion INNER JOIN tipos_habitacion ON habitacion.id_tipo_hab = tipos_habitacion.id_tipo ) AS temp ON temp.numero_habitacion=habitaciones_por_registro.numero_habitacion ) AS temp2 ON temp2.id_registro = registro.id_registro WHERE fecha_inicio BETWEEN $1 AND $2 UNION SELECT SUM(importe) as suma FROM servicios_por_habitacion WHERE fecha BETWEEN $1 AND $2) AS ganancias',
+        'SELECT * FROM (SELECT SUM((fecha_salida-fecha_inicio)*precio) as suma FROM registro INNER JOIN (SELECT * FROM habitaciones_por_registro INNER JOIN (SELECT * FROM habitacion INNER JOIN tipos_habitacion ON habitacion.id_tipo_hab = tipos_habitacion.id_tipo ) AS temp ON temp.numero_habitacion=habitaciones_por_registro.numero_habitacion ) AS temp2 ON temp2.id_registro = registro.id_registro WHERE fecha_inicio BETWEEN $1 AND $2 UNION SELECT SUM(importe) as suma FROM servicios_por_habitacion WHERE fecha BETWEEN $1 AND $2) AS ganancias',
         [req.params.inicio, req.params.salida]
     );
     res.status(200).json(response.rows)
@@ -428,7 +430,8 @@ const query10 = async (req, res) => {
 
 const query11 = async (req, res) => {
     const response = await pool.query(
-        'SELECT COUNT(*) AS num_quejas, nombre FROM departamento INNER JOIN (SELECT * FROM quejas_por_departamento INNER JOIN ( SELECT * FROM quejas INNER JOIN factura ON quejas.id_factura = factura.id_factura) AS temp ON temp.id_queja=quejas_por_departamento.id_queja) AS temp2 ON departamento.id_departamento = temp2.id_departamento  GROUP BY departamento.id_departamento' );
+        'SELECT COUNT(*) AS num_quejas, nombre FROM departamento INNER JOIN (SELECT * FROM quejas_por_departamento INNER JOIN ( SELECT * FROM quejas INNER JOIN factura ON quejas.id_factura = factura.id_factura WHERE fecha_exped BETWEEN $1 AND $2) AS temp ON temp.id_queja=quejas_por_departamento.id_queja ) AS temp2 ON departamento.id_departamento = temp2.id_departamento GROUP BY departamento.id_departamento;' ,
+        [req.params.inicio, req.params.salida]);
     res.status(200).json(response.rows)
 };
 
@@ -442,7 +445,8 @@ const query12 = async (req, res) => {
 
 const query13 = async (req, res) => {
     const response = await pool.query(
-        'SELECT nombre, max as valor FROM departamento INNER JOIN (SELECT MAX(promedio), temp.id_depto FROM ( SELECT satisfaccion.id_depto ,AVG(valor) AS promedio FROM satisfaccion GROUP BY satisfaccion.id_depto ) AS temp GROUP BY temp.id_depto ) as temp2 ON departamento.id_departamento = temp2.id_depto ORDER BY valor DESC;'
+        'SELECT nombre, max as valor FROM departamento INNER JOIN ( SELECT MAX(promedio), temp.id_depto FROM (SELECT satisfaccion.id_depto ,AVG(valor) AS promedio FROM satisfaccion WHERE id_factura IN (SELECT id_factura FROM factura WHERE fecha_exped BETWEEN $1 AND  $2 ) GROUP BY satisfaccion.id_depto ) AS temp GROUP BY temp.id_depto ) as temp2 ON departamento.id_departamento = temp2.id_depto ORDER BY valor DESC;'
+        , [req.params.inicio, req.params.salida]
     );
     res.status(200).json(response.rows)
 }

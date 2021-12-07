@@ -316,7 +316,7 @@ router.get('/query10/:inicio/:salida', query10);
 }
 ]
 */
-router.get('/query11', query11);
+router.get('/query11/:inicio/:salida', query11);
 /*
 [
 {
@@ -359,7 +359,7 @@ router.get('/query12/:inicio/:salida', query12);
 "ganancia": 654276.0599999999
 }
 ] */
-router.get('/query13', query13);
+router.get('/query13/:inicio/:salida', query13);
 /*
 [
 {
@@ -599,7 +599,7 @@ router.post('/huesped_paga/:nombre/:fecha_nacimiento/:direccion/:email/:rfc/:tel
 // nombre string(50), fecha date, email string(50), id int
 router.post('/huesped_acompana/:nombre_acompanante/:fecha_nac/:email/:id_huesped', postHuespedAcompana);
 // quejaI int, facturaI int, queja string
-router.post('/quejas/:quejaI/:facturaI/:queja', postQuejas)
+router.post('/quejas/:facturaI/:queja', postQuejas)
 // fecha date, id's int
 router.post('/registro/:fechaI/:fechaS/:id_huesped/:id_empleado/:id_paquete', postRegistro)
 // num_personas int, num_noches int, deposito double, medio string(15), email string(50), id's int, estado string(20), fecha date
