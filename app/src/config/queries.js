@@ -72,7 +72,7 @@ const queries = [
   {
     description:
       "Reporte de quejas registradas en base a un rango de fechas dado y clasificado por el  departamento al que fue aplicada la queja.",
-    inputType: [null],
+    inputType: ["twoDates"],
     name: "Consulta 11",
   },
   // 12
@@ -86,7 +86,7 @@ const queries = [
   {
     description:
       "Reporte del departamento con mejor rating de satisfacción, en base a un rango de fechas dado.",
-    inputType: [null],
+    inputType: ["twoDates"],
     name: "Consulta 13",
   },
 ];
